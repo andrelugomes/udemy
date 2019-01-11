@@ -1,1 +1,3 @@
 rootProject.name = 'kafka-confluent-schema-registry'
+include 'avro-basics'
+
