@@ -15,7 +15,6 @@ import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint;
 import com.twitter.hbc.core.processor.StringDelimitedProcessor;
 import com.twitter.hbc.httpclient.auth.Authentication;
 import com.twitter.hbc.httpclient.auth.OAuth1;
-import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -30,10 +29,10 @@ public class TwitterPoll {
 
     Logger logger = LoggerFactory.getLogger(TwitterPoll.class.getName());
 
-    public static final String CONSUMER_KEY = "W5.......H";
-    public static final String CONSUMER_SECRET = "Nx......O5F";
-    public static final String TOKEN = "1849......sMr";
-    public static final String SECRET = "6i0Q.......N5v";
+    public static final String CONSUMER_KEY = "W55uJ19...h760vQ84H";
+    public static final String CONSUMER_SECRET = "NxiSa...DHM9yMHMRnlO5F";
+    public static final String TOKEN = "184978491-vWLxG....Z3TFSEudvFJesMr";
+    public static final String SECRET = "6i0QTjOj4SswJ.....KikLJUfuTqmN5v";
 
     public TwitterPoll(){}
 
@@ -79,12 +78,9 @@ public class TwitterPoll {
 
             if (msg != null){
                 logger.info(msg);
-                producer.send(new ProducerRecord<>("twitter_tweets", null, msg), new Callback() {
-                    @Override
-                    public void onCompletion(RecordMetadata recordMetadata, Exception e) {
-                        if (e != null) {
-                            logger.error("Something bad happened", e);
-                        }
+                producer.send(new ProducerRecord<>("twitter_tweets", null, msg), (RecordMetadata recordMetadata, Exception e) -> {
+                    if (e != null) {
+                        logger.error("Something bad happened", e);
                     }
                 });
             }
@@ -99,7 +95,7 @@ public class TwitterPoll {
         Hosts hosebirdHosts = new HttpHosts(Constants.STREAM_HOST);
         StatusesFilterEndpoint hosebirdEndpoint = new StatusesFilterEndpoint();
 
-        List<String> terms = Lists.newArrayList("java", "kafka");
+        List<String> terms = Lists.newArrayList("java", "kafka", "kotlin", "mongo", "spring", "reactive");
         
         hosebirdEndpoint.trackTerms(terms);
 
